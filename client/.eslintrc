@@ -1,0 +1,16 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "extends": [
+    "plugin:@typescript-eslint/recommended", // Use recommended rules of @typescript-eslint/eslint-plugin
+    "eslint-config-prettier"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "sourceType": "module"
+  },
+  "rules": {
+    "no-console": "error",
+    "no-restricted-imports": ["error"],
+    "semi": ["error", "never"]
+  }
+}

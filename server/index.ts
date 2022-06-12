@@ -79,4 +79,7 @@ app.get("/", async (req, res): Promise<void> => {
   }
 })
 
-app.listen(8888)
+app.listen(8888, () => {
+  // eslint-disable-next-line no-console
+  console.log("Server is up in port 8888")
+})
