@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from "axios"
 import express from "express"
+import cors from "cors"
 
 const app = express()
 
@@ -24,7 +25,16 @@ interface paginatedQuery {
   nextPage: number | null
 }
 
+const corsOptions = {
+  origin: "http://localhost:7777",
+  optionsSuccessStatus: 200, // some legacy browsers choke on 204
+}
+
+app.use(cors(corsOptions))
+
 app.get("/", async (req, res): Promise<void> => {
+  res.setHeader("Access-Control-Allow-Origin", "*")
+
   const SPACEX_LAUNCHES_ENDPOINT =
     "https://api.spacexdata.com/v4/launches/query"
 
