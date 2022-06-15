@@ -1,30 +1,39 @@
 import { useEffect, useState } from "react"
-import { Container, Row } from "react-bootstrap"
-import CardComponent, { CardProps } from "./components/Card"
-import Header from "./components/Header"
+import { Alert, Container, Row } from "react-bootstrap"
+import Pagination from "react-responsive-pagination"
+import "./pagination.css"
+
+import { Forms, Header, LaunchesList } from "./components"
+import fetchdata, { paginatedQuery } from "./utils/fetchdata"
 
 function App() {
-  //StrictMode renders components twice (on dev but not production)
-  //in order to detect any problems with your code and warn you about
-  //them (which can be quite useful).
-
-  const [detail, setDetails] = useState<CardProps>({
-    id: "",
-    date_utc: "",
-    details: "",
-    success: true,
-    name: "",
-  })
+  const [error, setError] = useState<string>("")
+  const [data, setData] = useState<paginatedQuery>()
+  const [loading, setLoading] = useState<boolean>(false)
+  const [page, setPage] = useState<number>(1)
+  const [totalPages, setTotalPages] = useState<number>(1)
+  const [limit, setLimit] = useState<string>("10")
+  const [year, setYear] = useState<string | undefined>()
 
   useEffect(() => {
-    fetch("http://localhost:8888")
-      .then(response => response.json())
-      .then(response => {
-        console.log(response)
-        console.log("done fetch")
-        setDetails(response.data.docs[0])
-      })
-  }, [])
+    const fetchLaunches = async () => {
+      setLoading(true)
+      const data = await fetchdata(year, page, limit)
+      if (data.docs.length === 0) {
+        setError("Your query returns no results")
+        setTotalPages(0)
+        setData(undefined)
+        setLoading(false)
+        return
+      }
+      setData(data)
+      setError("")
+      setTotalPages(data.totalPages)
+      setPage(data.page)
+      setLoading(false)
+    }
+    fetchLaunches()
+  }, [year, page, limit])
 
   return (
     <div
@@ -36,13 +45,14 @@ function App() {
     >
       <Header />
       <Container fluid="sm" className="mt-4">
-        <Row className="justify-content-md-center">
-          <CardComponent {...detail} />
-          <CardComponent {...detail} />
-          <CardComponent {...detail} />
-          <CardComponent {...detail} />
-          <CardComponent {...detail} />
-          <CardComponent {...detail} />
+        <Forms setYear={setYear} setLimit={setLimit} />
+        <Pagination total={totalPages} current={page} onPageChange={setPage} />
+        <Row className="justify-content-center">
+          {error ? (
+            <Alert variant="danger">{error}</Alert>
+          ) : (
+            <LaunchesList docs={data?.docs} loading={loading} />
+          )}
         </Row>
       </Container>
     </div>

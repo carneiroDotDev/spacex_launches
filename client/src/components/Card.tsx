@@ -3,7 +3,7 @@ import { Badge, Card } from "react-bootstrap"
 export interface CardProps {
   id: string
   date_utc: string
-  details: string
+  details?: string
   success: boolean
   name: string
 }
@@ -15,7 +15,9 @@ const CardComponent: React.FC<CardProps> = ({
   details,
   success,
 }) => {
-  const shortDetail = details.split(".")[0]
+  const shortDetail = details
+    ? details.split(".")[0]
+    : "No detail about this launch provided."
   const d = new Date(date_utc)
   const datestring =
     ("0" + d.getDate()).slice(-2) +
@@ -39,10 +41,10 @@ const CardComponent: React.FC<CardProps> = ({
       <Card.Header>{datestring}</Card.Header>
       <Card.Body>
         <Card.Title>{name}</Card.Title>
-        <Card.Text>{shortDetail}</Card.Text>
-        <Badge pill bg={success ? "success" : "danger"}>
+        <Badge pill bg={success ? "success" : "danger"} className="my-2">
           {success ? "Success" : "Fail"}
         </Badge>
+        <Card.Text>{shortDetail}</Card.Text>
       </Card.Body>
     </Card>
   )

@@ -1,13 +1,10 @@
-import * as React from "react"
 import { Container, Navbar } from "react-bootstrap"
-
-// interface IHeaderProps {}
 
 const Header: React.FC = () => (
   <>
     <Navbar bg="dark" variant="dark">
       <Container>
-        <Navbar.Brand href="#home">SpaceX Launchers displayer</Navbar.Brand>
+        <Navbar.Brand href="#home">SpaceX launch displayer</Navbar.Brand>
       </Container>
     </Navbar>
   </>

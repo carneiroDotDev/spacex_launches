@@ -1,11 +1,11 @@
 #build with
 # docker build -t server:latest .
 #run with
-# docker run -p 8888:8888 server:latest
+# docker run -p 8888:8888 -t server:latest
 #notes for debugging:
 # docker build --no-cache -t server:latest .
 # docker run -it server:latest sh
-FROM node:16
+FROM mhart/alpine-node:16.4.2
 
 # Create app directory
 WORKDIR /usr/src/app

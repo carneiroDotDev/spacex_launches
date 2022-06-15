@@ -39,7 +39,7 @@ app.get("/", async (req, res): Promise<void> => {
     "https://api.spacexdata.com/v4/launches/query"
 
   try {
-    if (Object.keys(req.query).length === 0) {
+    if (Object.keys(req.query).length === 0 || !Boolean(req.query.year)) {
       const allLaunchesQuery: AxiosResponse<paginatedQuery> = await axios.post(
         SPACEX_LAUNCHES_ENDPOINT,
         {
@@ -78,6 +78,12 @@ app.get("/", async (req, res): Promise<void> => {
           },
         }
       )
+
+      // Just for the record - the MongoDb errors are not returned
+      // query as {"Date" : ISODate("2019aaaaa-08-31T00:00:00.000+0000")}
+      // returns 200 code
+      // console.log(singleYearQuery)
+      // console.log(singleYearQuery.status)
 
       res.status(200).send({ data: singleYearQuery.data })
       return
