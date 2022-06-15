@@ -23,6 +23,5 @@ export default async function fetchdata(
     : `http://localhost:8888?page=${page}&limit=${limit}`
   const res = await fetch(url)
   const json = await res.json()
-  console.log("json -> ", json)
   return json.data
 }
