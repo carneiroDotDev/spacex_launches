@@ -3,5 +3,5 @@
 ### Run with:
 ```bash
   docker build -t server:latest .
-  docker run -p 8888:8888 server:latest
+  docker run -p 8888:8888 -t server:latest
 ```
